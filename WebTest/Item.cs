@@ -10,6 +10,7 @@ namespace WebTest
         public const string CHECKMARK_IMAGE = "Images/1382978238_checkmark.png";
         public const string ERROR_IMAGE = "Images/1382978241_no_entry.png";
         public const string REFRESH_IMAGE = "Images/1382978244_arrow_cycle.png";
+        public const string NO_IMAGE = "Images/blank.png";
 
         public event PropertyChangedEventHandler PropertyChanged;
         protected void NotifyPropertyChanged(string strPropertyName)
@@ -75,7 +76,7 @@ namespace WebTest
         {
             details = "";
             status = "";
-            image = "";
+            image = NO_IMAGE;
         }
 
         public Item(string url) // ctor
@@ -83,7 +84,7 @@ namespace WebTest
             site = url;
             status = "";
             details = "";
-            image = "";
+            image = NO_IMAGE;
         }
 
         // Implement this method to serialize data. The method is called on serialization. 
@@ -100,7 +101,7 @@ namespace WebTest
             site = (string)info.GetValue("site", typeof(string));
             status = "";
             details = "";
-            image = "";
+            image = NO_IMAGE;
         }
     }
 }

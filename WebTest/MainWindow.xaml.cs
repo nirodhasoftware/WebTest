@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.IO;
 using System.Net;
 using System.Runtime.Serialization;
@@ -29,12 +28,13 @@ namespace WebTest
             items = new ObservableCollection<Item>();
             dataGrid1.DataContext = items;
 
-            webpages = new ObservableCollection<Webpage>();
-            dataGrid2.DataContext = webpages;
+            //webpages = new ObservableCollection<Webpage>();
+            //dataGrid2.DataContext = webpages;
         }
 
         private void Monitor_Refresh()
         {
+            dataGrid1.IsEnabled = false;
             Monitor_RefreshButton.IsEnabled = false;
 
             // Clear previous results
@@ -88,6 +88,7 @@ namespace WebTest
                 Task.Factory.StartNew(() => // this will jump back onto the UI thread
                 {
                     Monitor_RefreshButton.IsEnabled = true;
+                    dataGrid1.IsEnabled = true;
                 }, System.Threading.CancellationToken.None, TaskCreationOptions.None, uiScheduler);
             });
         }
@@ -107,10 +108,10 @@ namespace WebTest
                 }
             }
 
-            SerializeItem(webpages, "Webpages.b");
+            SerializeWebpages(webpages, "Webpages.b");
         }
 
-        public static void SerializeItem(ObservableCollection<Webpage> obj, string fileName)
+        public static void SerializeWebpages(ObservableCollection<Webpage> obj, string fileName)
         {
             FileStream fs = new FileStream(fileName, FileMode.OpenOrCreate);
             IFormatter formatter = new BinaryFormatter();
@@ -118,7 +119,7 @@ namespace WebTest
             fs.Close();
         }
 
-        public static ObservableCollection<Webpage> DeserializeItem(string fileName)
+        public static ObservableCollection<Webpage> DeserializeWebpages(string fileName)
         {
             ObservableCollection<Webpage> obj = null;
 
@@ -135,24 +136,43 @@ namespace WebTest
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            using (System.IO.StreamReader file = new System.IO.StreamReader("sites.txt"))
+            string filename;
+
+            filename = "sites.txt";
+            if (File.Exists(filename))
             {
-                while (file.Peek() >= 0)
+                using (System.IO.StreamReader file = new System.IO.StreamReader(filename))
                 {
-                    string s = file.ReadLine();
-                    Item item = new Item(s);
-                    items.Add(item);
+                    while (file.Peek() >= 0)
+                    {
+                        string s = file.ReadLine();
+                        Item item = new Item(s);
+                        items.Add(item);
+                    }
                 }
             }
-
-            string fileName = "Webpages.b";
-            if(File.Exists(fileName))
+            else
             {
-                webpages = (ObservableCollection<Webpage>)DeserializeItem(fileName);
+                string s = "http://www.google.com";
+                Item item = new Item(s);
+                items.Add(item);
+            }
+
+            filename = "Webpages.b";
+            if (File.Exists(filename))
+            {
+                webpages = (ObservableCollection<Webpage>)DeserializeWebpages(filename);
+                dataGrid2.DataContext = webpages;
+            }
+            else
+            {
+                webpages = new ObservableCollection<Webpage>();
+                Webpage page = new Webpage("https://github.com/nirodhasoftware/WebTest");
+                webpages.Add(page);
                 dataGrid2.DataContext = webpages;
             }
 
-            Monitor_Refresh();
+            //Monitor_Refresh();
         }
 
         private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
@@ -236,6 +256,7 @@ namespace WebTest
         private void Changes_Refresh()
         {
             Changes_RefreshButton.IsEnabled = false;
+            dataGrid2.IsEnabled = false;
 
             foreach (Webpage webpage in webpages)
             {
@@ -255,6 +276,7 @@ namespace WebTest
                 Task.Factory.StartNew(() => // this will jump back onto the UI thread
                 {
                     Changes_RefreshButton.IsEnabled = true;
+                    dataGrid2.IsEnabled = true;
                 }, System.Threading.CancellationToken.None, TaskCreationOptions.None, uiScheduler);
             });
         }
@@ -280,20 +302,20 @@ namespace WebTest
 
         private void tabControl_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
         {
-            try
-            {
-                System.Windows.Controls.TabItem tab = tabControl.SelectedItem as System.Windows.Controls.TabItem;
+            //try
+            //{
+            //    System.Windows.Controls.TabItem tab = tabControl.SelectedItem as System.Windows.Controls.TabItem;
 
-                if (tab.Header.ToString() == "Change Detection")
-                {
-                    if(usedChangeDetection == false) // run automatically only the first time
-                        Changes_Refresh();
+            //    if (tab.Header.ToString() == "Change Detection")
+            //    {
+            //        if (usedChangeDetection == false) // run automatically only the first time
+            //            Changes_Refresh();
 
-                    usedChangeDetection = true;
-                    tab.Focus();
-                }
-            }
-            catch { }
+            //        usedChangeDetection = true;
+            //        tab.Focus();
+            //    }
+            //}
+            //catch { }
         }
     }
 }

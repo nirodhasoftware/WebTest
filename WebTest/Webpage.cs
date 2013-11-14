@@ -11,8 +11,9 @@ namespace WebTest
     {
         public const string REFRESH_IMAGE = "Images/1382978244_arrow_cycle.png";
         public const string CHANGED_IMAGE = "Images/1383098581_burn.png";
-        public const string SAME_IMAGE = ""; // "Images/1383098572_pause.png";
+        public const string SAME_IMAGE = "Images/blank.png"; 
         public const string ERROR_IMAGE = "Images/1382978241_no_entry.png";
+        public const string NO_IMAGE = "Images/blank.png"; 
 
         public event PropertyChangedEventHandler PropertyChanged;
         protected void NotifyPropertyChanged(string strPropertyName)
@@ -22,12 +23,7 @@ namespace WebTest
         }
 
         // Member Variables
-        protected string _url;
         protected string _cache;
-        protected DateTime _lastUpdate;
-        protected double _threshold;        
-        protected double _percentChanged;
-        protected string _image;
 
         // Default Constructor
         public Webpage()
@@ -37,7 +33,7 @@ namespace WebTest
             //_lastUpdate = null;
             _threshold = 5.0;
             _percentChanged = 0.0;
-            _image = SAME_IMAGE;
+            _image = NO_IMAGE;
         }
 
         // Alternate Constructor
@@ -48,10 +44,49 @@ namespace WebTest
             //_lastUpdate = null;
             _threshold = 5.0;
             _percentChanged = 0.0;
-            _image = SAME_IMAGE;
+            _image = NO_IMAGE;
         }
 
-        // Getters and Setters        
+        // Implement this method to serialize data. The method is called on serialization. 
+        public void GetObjectData(SerializationInfo info, StreamingContext context)
+        {
+            try
+            {
+                // Use the AddValue method to specify serialized values.
+                info.AddValue("_url", _url, typeof(string));
+                info.AddValue("_lastUpdate", _lastUpdate, typeof(DateTime));
+                info.AddValue("_cache", _cache, typeof(string));
+                info.AddValue("_threshold", _threshold, typeof(double));
+            }
+            catch { }
+        }
+
+        // The special constructor is used to deserialize values. 
+        public Webpage(SerializationInfo info, StreamingContext context)
+        {
+            try
+            {
+                // Reset the property value using the GetValue method.
+                _url = (string)info.GetValue("_url", typeof(string));
+                _lastUpdate = (DateTime)info.GetValue("_lastUpdate", typeof(DateTime));
+                _cache = (string)info.GetValue("_cache", typeof(string));
+                _threshold = (double)info.GetValue("_threshold", typeof(double));
+            }
+            catch
+            {
+                if (_url == null) _url = "";
+                if (_cache == null) _cache = "";
+                if (_threshold == null) _threshold = 5.0;
+            }
+            finally
+            {
+                _percentChanged = 0.0;
+                _image = NO_IMAGE;
+            }
+        }
+
+        // Getters and Setters    
+        protected string _url;
         public string Url
         {
             get
@@ -63,6 +98,7 @@ namespace WebTest
                 SetUrl(value);                
             }
         }
+        protected DateTime _lastUpdate;
         public string LastUpdate
         {
             get
@@ -74,6 +110,7 @@ namespace WebTest
             //    SetLastUpdate(value);
             //}
         }
+        protected double _threshold;     
         public string Threshold
         {
             get
@@ -85,7 +122,7 @@ namespace WebTest
                 SetThreshold(value);
             }
         }
-        
+        protected double _percentChanged;
         public string PercentChanged
         {
             get
@@ -107,7 +144,7 @@ namespace WebTest
                 SetPercentChanged(d);
             }
         }
-
+        protected string _image;
         public string Image
         {
             get
@@ -225,44 +262,6 @@ namespace WebTest
             // ???
             // set picture to error
             // do not display status 
-        }
-
-        // Implement this method to serialize data. The method is called on serialization. 
-        public void GetObjectData(SerializationInfo info, StreamingContext context)
-        {
-            try
-            {
-                // Use the AddValue method to specify serialized values.
-                info.AddValue("_url", _url, typeof(string));
-                info.AddValue("_lastUpdate", _lastUpdate, typeof(DateTime));
-                info.AddValue("_cache", _cache, typeof(string));
-                info.AddValue("_threshold", _threshold, typeof(double));
-            }
-            catch { }
-        }
-
-        // The special constructor is used to deserialize values. 
-        public Webpage(SerializationInfo info, StreamingContext context)
-        {
-            try
-            {
-                // Reset the property value using the GetValue method.
-                _url = (string)info.GetValue("_url", typeof(string));
-                _lastUpdate = (DateTime)info.GetValue("_lastUpdate", typeof(DateTime));
-                _cache = (string)info.GetValue("_cache", typeof(string));
-                _threshold = (double)info.GetValue("_threshold", typeof(double));
-            }
-            catch
-            {
-                if (_url == null) _url = "";
-                if (_cache == null) _cache = "";
-                if (_threshold == null) _threshold = 5.0;
-            }
-            finally
-            {
-                _percentChanged = 0.0;
-                _image = "";
-            }
         }
     }
 }

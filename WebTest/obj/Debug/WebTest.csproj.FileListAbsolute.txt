@@ -10,6 +10,4 @@ C:\Users\Doug\Dropbox\My Documents\2013\Nirodha Software\WebTest\WebTest\obj\Deb
 C:\Users\Doug\Dropbox\My Documents\2013\Nirodha Software\WebTest\WebTest\obj\Debug\WebCheck.g.resources
 C:\Users\Doug\Dropbox\My Documents\2013\Nirodha Software\WebTest\WebTest\obj\Debug\WebCheck.exe
 C:\Users\Doug\Dropbox\My Documents\2013\Nirodha Software\WebTest\WebTest\obj\Debug\WebCheck.pdb
-C:\Users\Doug\Dropbox\My Documents\2013\Nirodha Software\Git\WebTest\WebTest\bin\Debug\WebCheck.exe.config
-C:\Users\Doug\Dropbox\My Documents\2013\Nirodha Software\Git\WebTest\WebTest\obj\Debug\WebCheck.exe
-C:\Users\Doug\Dropbox\My Documents\2013\Nirodha Software\Git\WebTest\WebTest\obj\Debug\WebCheck.pdb
+C:\Users\Doug\Dropbox\My Documents\2013\Nirodha Software\WebTest\WebTest\obj\Debug\WebTest.csprojResolveAssemblyReference.cache

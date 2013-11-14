@@ -68,12 +68,12 @@
                     <ScrollViewer HorizontalScrollBarVisibility="Auto">
                         <StackPanel Orientation="Vertical">
                             <Separator />
-                            <DataGrid Name="dataGrid1" ItemsSource="{Binding}" AutoGenerateColumns="False" AlternatingRowBackground="AliceBlue" SelectionMode="Extended" CanUserReorderColumns="False" CanUserResizeRows="False">
+                            <DataGrid Name="dataGrid1" ItemsSource="{Binding}" AutoGenerateColumns="False" AlternatingRowBackground="AliceBlue" SelectionMode="Extended" CanUserAddRows="True" CanUserReorderColumns="False" CanUserResizeRows="False">
                                 <DataGrid.Columns>
                                     <DataGridTemplateColumn Width="SizeToCells" IsReadOnly="True">
                                         <DataGridTemplateColumn.CellTemplate>
                                             <DataTemplate>
-                                                <Image Width="16" Height="16" Source="{Binding Image}" />
+                                                <Image Width="16" Height="16" Source="{Binding Path=Image}" />
                                             </DataTemplate>
                                         </DataGridTemplateColumn.CellTemplate>
                                     </DataGridTemplateColumn>
@@ -107,13 +107,7 @@
                                             </DataTemplate>
                                         </DataGridTemplateColumn.CellTemplate>
                                     </DataGridTemplateColumn>
-                                    <DataGridHyperlinkColumn Header="Page" Width="Auto" IsReadOnly="False" Binding="{Binding Url}">
-                                        <DataGridHyperlinkColumn.ElementStyle>
-                                            <Style>
-                                                <EventSetter Event="Hyperlink.Click" Handler="DG2_Hyperlink_Click"/>
-                                            </Style>
-                                        </DataGridHyperlinkColumn.ElementStyle>
-                                    </DataGridHyperlinkColumn>
+                                    <DataGridTextColumn Header="Page" Width="Auto" IsReadOnly="False" Binding="{Binding Url}"></DataGridTextColumn>
                                     <DataGridTextColumn Header="Original Date" Width="Auto" IsReadOnly="True" Binding="{Binding LastUpdate}"></DataGridTextColumn>
                                     <DataGridTextColumn Header="Percent Changed" Width="Auto" IsReadOnly="True" Binding="{Binding PercentChanged}"></DataGridTextColumn>
                                     <DataGridTextColumn Header="Threshold" Width="Auto" IsReadOnly="False" Binding="{Binding Threshold}"></DataGridTextColumn>
